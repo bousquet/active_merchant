@@ -94,7 +94,9 @@ class OrbitalGatewayTest < Test::Unit::TestCase
       three_d_secure: {
         eci: '5',
         xid: 'TESTXID',
-        cavv: 'TESTCAVV'
+        cavv: 'TESTCAVV',
+        version: '2',
+        ds_transaction_id: '97267598FAE648F28083C23433990FBC'
       }
     }
   end
@@ -216,6 +218,8 @@ class OrbitalGatewayTest < Test::Unit::TestCase
     end.check_request do |_endpoint, data, _headers|
       assert_match %{<AuthenticationECIInd>5</AuthenticationECIInd>}, data
       assert_match %{<AAV>TESTCAVV</AAV>}, data
+      assert_match %{<MCProgramProtocol>2</MCProgramProtocol>}, data
+      assert_match %{<MCDirectoryTransID>97267598FAE648F28083C23433990FBC</MCDirectoryTransID>}, data
     end.respond_with(successful_purchase_response)
   end
 
